@@ -1,30 +1,69 @@
-#include <iostream> 
-#include <string> 
-#include <utility>  
-class Person { 
-    protected:     
-        std::string name;  
-    public:     
-        explicit Person(std::string personName) : name(std::move(personName)) {} 
-        void displayName() const {         
-            std::cout << "Name: " << name << '\n';     
-        } 
-};  
-class Student : virtual public Person { 
-    public:     
-        Student() : Person("Unknown") {} 
-};  
-class Employee : virtual public Person { 
-    public:     
-        Employee() : Person("Unknown") {} 
-};  
-class TeachingAssistant : public Student, public Employee { 
-    public:     
-        explicit TeachingAssistant(std::string assistantName)         
-            : Person(std::move(assistantName)), Student(), Employee() {} 
-};  
-int main() {     
-    TeachingAssistant assistant("Riya");     
-    assistant.displayName();     
-    return 0; 
-} 
+#include <iostream>     // Provides cout
+#include <string>       // Provides string data type
+#include <utility>      // Provides move()
+using namespace std;    // Allows cout and string without std::
+// Base class
+class Person
+{
+protected:
+    string name;        // Stores person's name
+public:
+    // Parameterized constructor
+    explicit Person(string personName)
+        : name(move(personName))
+    {
+        // Stores the person's name
+    }
+    // Function to display name
+    void displayName() const
+    {
+        cout << "Name: " << name << '\n';
+        // Displays person's name
+    }
+};
+// Student inherits Person virtually
+class Student : virtual public Person
+{
+public:
+    // Constructor of Student
+    Student()
+        : Person("Unknown")
+    {
+        // Calls Person constructor
+        // But Person is a virtual base
+    }
+};
+// Employee inherits Person virtually
+class Employee : virtual public Person
+{
+public:
+    // Constructor of Employee
+    Employee()
+        : Person("Unknown")
+    {
+        // Calls Person constructor
+        // But Person is a virtual base
+    }
+};
+// TeachingAssistant inherits from Student and Employee
+class TeachingAssistant : public Student, public Employee
+{
+public:
+    // Constructor of TeachingAssistant
+    explicit TeachingAssistant(string assistantName)
+        : Person(move(assistantName)),   // Initializes virtual base
+          Student(),                    // Calls Student constructor
+          Employee()                    // Calls Employee constructor
+    {
+        // TeachingAssistant directly initializes Person
+    }
+};
+// Main function
+int main()
+{
+    // Creates TeachingAssistant object
+    TeachingAssistant assistant("Riya");
+    // Calls Person's displayName()
+    assistant.displayName();
+    return 0;          // Ends the program
+}

@@ -1,30 +1,52 @@
-#include <iostream>
-#include <string>
-
-#include <utility>
-
-class Employee {
+#include <iostream>     // Provides cout
+#include <string>       // Provides string
+#include <utility>      // Provides move()
+using namespace std;    // Avoids writing std::
+// Base class
+class Employee
+{
 protected:
-std::string name;
-
+    string name;        // Protected member
+                        // Can be accessed inside Employee
+                        // and inside derived classes
 public:
-explicit Employee(std::string employeeName) : name(std::move(employeeName)) {}
+    // Employee constructor
+    explicit Employee(string employeeName)
+        : name(move(employeeName))
+    {
+        // Stores employee name in name
+    }
 };
-class Developer : public Employee {
+// Derived class
+class Developer : public Employee
+{
 private:
-std::string language;
+    string language;    // Stores programming language
 public:
-Developer(std::string employeeName, std::string programmingLanguage)
-: Employee(std::move(employeeName)), language(std::move(programmingLanguage)) {}
-
-void display() const {
-std::cout << "Developer: " << name << '\n';
-std::cout << "Language: " << language << '\n';
-}
+    // Developer constructor
+    Developer(string employeeName, string programmingLanguage)
+        : Employee(move(employeeName)),
+          language(move(programmingLanguage))
+    {
+        // Employee(...) calls base class constructor
+        // language stores programming language
+    }
+    // Function to display details
+    void display() const
+    {
+        // name belongs to Employee
+        // It can be accessed here because it is protected
+        cout << "Developer: " << name << '\n';
+        // Displays programming language
+        cout << "Language: " << language << '\n';
+    }
 };
-
-int main() {
-Developer developer("Neha", "C++");
-developer.display();
-return 0;
+// Main function
+int main()
+{
+    // Creates Developer object
+    Developer developer("Neha", "C++");
+    // Calls display function
+    developer.display();
+    return 0;          // Successful termination
 }

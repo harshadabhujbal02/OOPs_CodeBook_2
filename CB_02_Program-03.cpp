@@ -1,23 +1,55 @@
-#include <iostream>
-class Base {
+#include <iostream>     // Provides cout
+using namespace std;    // Allows cout without std::
+/*
+    Base class
+*/
+class Base
+{
 public:
- void show() const {
- std::cout << "Base public function\n";
- }
+    // Public function
+    void show() const
+    {
+        cout << "Base public function\n";
+        // Displays message
+    }
 };
-class PublicDerived : public Base {
+/*
+    Public inheritance
+    Base public members remain public
+*/
+class PublicDerived : public Base
+{
+    // No additional members
 };
-class PrivateDerived : private Base {
+/*
+    Private inheritance
+    Base public members become private inside PrivateDerived
+*/
+class PrivateDerived : private Base
+{
 public:
- void callBaseShow() const {
- show();
- }
+    // Public function of derived class
+    void callBaseShow() const
+    {
+        // show() is inherited from Base
+        // It can be called inside the derived class
+        show();
+    }
 };
-int main() {
- PublicDerived publicObject;
- publicObject.show();
- PrivateDerived privateObject;
- privateObject.callBaseShow();
- // privateObject.show(); // Error: show() is private through private inheritance.
- return 0;
+// Main function
+int main()
+{
+    // Creates object of PublicDerived
+    PublicDerived publicObject;
+    // show() is public because inheritance is public
+    publicObject.show();
+    // Creates object of PrivateDerived
+    PrivateDerived privateObject;
+    // show() cannot be called directly here
+    // because private inheritance makes it private
+    // privateObject.show();   // ERROR
+    // Instead, call the public function
+    // which internally calls show()
+    privateObject.callBaseShow();
+    return 0;                  // End program
 }
